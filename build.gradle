@@ -4,10 +4,11 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.hibernate.orm' version '6.1.5.Final'
     id 'org.graalvm.buildtools.native' version '0.9.18'
+    id 'com.google.cloud.tools.jib' version '3.2.0'
 }
 
 group = 'ru.novoselov'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -58,6 +59,21 @@ hibernate {
         lazyInitialization true
         dirtyTracking true
         associationManagement true
+    }
+}
+
+jib {
+    from {
+        image dockerImage
+    }
+
+    to {
+        image "docker.io/caspaze/${project.name}:${project.version}"
+
+        auth {
+            username System.getenv('DOCKER_USERNAME')
+            password System.getenv('DOCKER_PASSWORD')
+        }
     }
 }
 
