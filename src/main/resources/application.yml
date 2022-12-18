@@ -1,11 +1,18 @@
 spring:
   application:
     name: auth-service
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
     url: ${DATABASE_URL}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 eureka:
   client:
     register-with-eureka: true
