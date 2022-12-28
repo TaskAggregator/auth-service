@@ -6,7 +6,7 @@ databaseChangeLog:
         -
         - createTable:
             tableName: users
-            schemaName: auth_service
+            schemaName: auth
             columns:
               - column:
                   name: id

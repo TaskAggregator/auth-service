@@ -5,7 +5,7 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: roles
-            schemaName: auth_service
+            schemaName: auth
             columns:
               - column:
                   name: id
