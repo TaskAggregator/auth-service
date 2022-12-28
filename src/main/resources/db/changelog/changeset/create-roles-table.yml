@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-role-table
+      author: Vadim Novoselov
+      changes:
+        - createTable:
+            tableName: roles
+            schemaName: auth_service
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
