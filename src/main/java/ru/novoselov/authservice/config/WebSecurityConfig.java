@@ -1,6 +1,5 @@
 package ru.novoselov.authservice.config;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.novoselov.authservice.properties.SecurityProperties;
 import ru.novoselov.authservice.security.JwtAuthFilter;
 
 @Configuration
@@ -29,7 +27,6 @@ public class WebSecurityConfig {
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
 
     }
 

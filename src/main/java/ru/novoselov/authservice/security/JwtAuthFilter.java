@@ -17,16 +17,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.novoselov.authservice.data.principal.UserPrincipal;
-import ru.novoselov.authservice.properties.SecurityProperties;
 
-import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-
+    private static final String BEARER = "Bearer ";
     private final Algorithm algorithm;
 
 
@@ -35,16 +33,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             var authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (StringUtils.hasText(authorizationHeader)) {
+                String token = extractToken(authorizationHeader);
                 var verifier = JWT.require(algorithm).build();
 
-                var principal = decode(verifier.verify(authorizationHeader));
+                var principal = decode(verifier.verify(token));
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, principal.getUsername(), principal.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                filterChain.doFilter(request, response);
             }
-            throw new AuthenticationException();
+
+            filterChain.doFilter(request, response);
+
         } catch (Exception e) {
             response.sendError(HttpStatus.UNAUTHORIZED.value());
         }
@@ -64,5 +64,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .authorities(authorities)
                 .build();
 
+    }
+
+    private String extractToken(String headerValue) {
+        return headerValue.substring(BEARER.length());
     }
 }

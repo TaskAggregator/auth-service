@@ -1,5 +1,11 @@
 package ru.novoselov.authservice.model.response;
 
-public record AuthenticationResponse(String accessToken,
-                                     String refreshToken) {
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class AuthenticationResponse {
+    private String accessToken;
+    private String refreshToken;
 }

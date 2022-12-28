@@ -19,8 +19,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(@NotNull AuthenticationRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User with username" + request.getUsername() + "not found"));
-        return new AuthenticationResponse(jwtTokenProvider.accessToken(user), jwtTokenProvider.refreshToken(user));
+                .orElseThrow(() -> new NotFoundException("User with username " + request.getUsername() + " not found"));
+
+        return AuthenticationResponse.builder()
+                .accessToken(jwtTokenProvider.accessToken(user))
+                .refreshToken(jwtTokenProvider.refreshToken(user))
+                .build();
     }
 
 }

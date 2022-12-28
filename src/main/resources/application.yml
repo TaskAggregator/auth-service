@@ -15,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        default_schema: auth_service
+        default_schema: auth
 eureka:
   client:
     register-with-eureka: true
