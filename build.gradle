@@ -3,7 +3,6 @@ plugins {
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.hibernate.orm' version '6.1.5.Final'
-    id 'org.graalvm.buildtools.native' version '0.9.18'
     id 'com.google.cloud.tools.jib' version '3.2.0'
 }
 
@@ -25,6 +24,7 @@ repositories {
 
 ext {
     set('springCloudVersion', "2022.0.0-RC2")
+    mapStructVersion  = "1.5.3.Final"
 }
 
 dependencies {
@@ -37,10 +37,13 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.auth0:java-jwt:4.2.1'
+    implementation "org.mapstruct:mapstruct:$mapStructVersion"
+    implementation 'org.glassfish.jersey.core:jersey-common:3.0.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.springframework.security:spring-security-test'

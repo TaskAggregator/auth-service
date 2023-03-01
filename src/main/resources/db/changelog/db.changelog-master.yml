@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-roles-table.yml
   - include:
       file: db/changelog/changeset/create-users-roles-table.yml
+  - include:
+      file: db/changelog/changeset/email_username_unique_constraint.yml
