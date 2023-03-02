@@ -18,6 +18,7 @@ import ru.novoselov.authservice.model.mapper.UserMapper;
 import ru.novoselov.authservice.model.request.AuthenticationRequest;
 import ru.novoselov.authservice.model.request.SignupRequest;
 import ru.novoselov.authservice.model.response.AuthenticationResponse;
+import ru.novoselov.authservice.model.response.RefreshResponse;
 import ru.novoselov.authservice.model.response.SignupResponse;
 import ru.novoselov.authservice.security.JwtTokenProvider;
 
@@ -58,6 +59,15 @@ public class AuthenticationService {
         user = userRepository.save(user);
 
         return userMapper.toResponse(user);
+    }
+
+    public RefreshResponse refresh(String username) {
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("User " + username + "was not not found"));
+
+        return RefreshResponse.builder()
+                .accessToken(jwtTokenProvider.accessToken(user))
+                .build();
     }
 
     private void requirePasswordMatch(String password, String passwordHash) {

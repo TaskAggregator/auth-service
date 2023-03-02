@@ -2,13 +2,14 @@ package ru.novoselov.authservice.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import ru.novoselov.authservice.data.principal.UserPrincipal;
 import ru.novoselov.authservice.model.request.AuthenticationRequest;
 import ru.novoselov.authservice.model.request.SignupRequest;
 import ru.novoselov.authservice.model.response.AuthenticationResponse;
+import ru.novoselov.authservice.model.response.RefreshResponse;
 import ru.novoselov.authservice.model.response.SignupResponse;
 import ru.novoselov.authservice.service.AuthenticationService;
 
@@ -28,6 +29,10 @@ public record AuthController(AuthenticationService authenticationService) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-    //TODO refresh token endpoint
+    @PostMapping("/token/refresh")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<RefreshResponse> refreshToken(@AuthenticationPrincipal UserPrincipal user) {
+        return ResponseEntity.ok(authenticationService.refresh(user.getUsername()));
+    }
 
 }

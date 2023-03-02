@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import ru.novoselov.authservice.data.entity.Role;
 import ru.novoselov.authservice.data.entity.User;
 import ru.novoselov.authservice.properties.JwtProperties;
-import ru.novoselov.authservice.properties.SecurityProperties;
 
 import java.util.Date;
 import java.util.stream.Collectors;
