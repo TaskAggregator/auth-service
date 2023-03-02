@@ -35,6 +35,9 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "password_hash")
+    private String passwordHash;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

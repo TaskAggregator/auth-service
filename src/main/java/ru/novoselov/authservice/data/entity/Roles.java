@@ -7,9 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Roles {
 
-    ROLE_ADMIN(1),
-    ROLE_USER(2),
-    ROLE_MODERATOR(3);
+    ROLE_ADMIN(1L),
+    ROLE_USER(2L),
+    ROLE_MODERATOR(3L);
 
-    private final int id;
+    private final Long id;
 }
