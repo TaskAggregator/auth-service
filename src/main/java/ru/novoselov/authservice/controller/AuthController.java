@@ -1,5 +1,6 @@
 package ru.novoselov.authservice.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +15,11 @@ import ru.novoselov.authservice.model.response.SignupResponse;
 import ru.novoselov.authservice.service.AuthenticationService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public record AuthController(AuthenticationService authenticationService) {
+public class AuthController {
+
+    private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/signup",
             consumes = MediaType.APPLICATION_JSON_VALUE,
