@@ -4,7 +4,7 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yml
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432}/${POSTGRES_DB:task_tracker}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/task_tracker}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
@@ -16,6 +16,13 @@ spring:
     properties:
       hibernate:
         default_schema: auth
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_URL:localhost:9092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers: ${KAFKA_URL:localhost:9092}
 eureka:
   client:
     register-with-eureka: true

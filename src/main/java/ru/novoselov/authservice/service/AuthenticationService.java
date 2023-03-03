@@ -14,6 +14,7 @@ import ru.novoselov.authservice.data.entity.Roles;
 import ru.novoselov.authservice.data.entity.User;
 import ru.novoselov.authservice.data.repository.RoleRepository;
 import ru.novoselov.authservice.data.repository.UserRepository;
+import ru.novoselov.authservice.domain.EventFactory;
 import ru.novoselov.authservice.model.mapper.UserMapper;
 import ru.novoselov.authservice.model.request.AuthenticationRequest;
 import ru.novoselov.authservice.model.request.SignupRequest;
@@ -32,6 +33,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final EventPublishService eventPublishService;
     private final UserMapper userMapper;
 
     public AuthenticationResponse authenticate(@NotNull AuthenticationRequest request) {
@@ -57,6 +59,7 @@ public class AuthenticationService {
         var user = userMapper.toUser(request, Set.of(role));
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user = userRepository.save(user);
+        eventPublishService.publish(EventFactory.buildUserSignupEvent(user));
 
         return userMapper.toResponse(user);
     }
