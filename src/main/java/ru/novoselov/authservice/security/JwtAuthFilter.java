@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import ru.novoselov.authservice.data.principal.UserPrincipal;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,14 +31,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             var authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            requireNotNullAuthHeader(authorizationHeader);
             if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(BEARER)) {
                 String token = extractToken(authorizationHeader);
                 var verifier = JWT.require(algorithm).build();
 
                 var principal = decode(verifier.verify(token));
 
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, principal.getUsername(), principal.getAuthorities());
+                var auth = new UsernamePasswordAuthenticationToken(principal, principal.getUsername(), principal.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
@@ -65,11 +63,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .authorities(authorities)
                 .build();
 
-    }
-    private void requireNotNullAuthHeader(String header) {
-        if (Objects.isNull(header)) {
-            throw new SecurityException();
-        }
     }
 
     private String extractToken(String headerValue) {
