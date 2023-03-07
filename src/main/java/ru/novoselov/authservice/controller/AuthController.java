@@ -19,7 +19,7 @@ import ru.novoselov.authservice.service.AuthenticationService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationService authenticationService;
