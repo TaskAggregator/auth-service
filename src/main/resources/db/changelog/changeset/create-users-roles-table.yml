@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-roles-table
+      author: Vadim Novoselov
+      changes:
+        - createTable:
+            tableName: users_roles
+            schemaName: auth
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id
+                    references: auth.users(id)
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_id
+                    references: auth.roles(id)

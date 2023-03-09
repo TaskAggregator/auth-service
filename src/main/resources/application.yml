@@ -1,14 +1,39 @@
 spring:
   application:
     name: auth-service
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yml
   datasource:
-    url: ${DATABASE_URL}/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/task_tracker}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: auth
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_URL:localhost:9092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers: ${KAFKA_URL:localhost:9092}
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+
+jwt:
+  issuer: task-tracker
+  access-token-ttl: ${JWT_ACCESS_TOKEN_TTL:3600000}
+  refresh-token-ttl: ${JWT_REFRESH_TOKEN_TTL:86400000}
+
+security:
+  secret: ${SECURITY_SECRET:secret}

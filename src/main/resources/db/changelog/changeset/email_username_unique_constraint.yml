@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-unique-email-username-constraint
+      author: Vadim Novoselov
+      changes:
+        - addUniqueConstraint:
+            schemaName: auth
+            tableName: users
+            columnNames: email, username
+            constraintName: unique_email_username
+
